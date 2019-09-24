@@ -1,36 +1,91 @@
 import React, { Component } from 'react';
 import Output from './Output';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import data from './data'
+import { stringify } from 'querystring';
 class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value:[
-                {linenumber : 0},
-                {linelength: 0},
-                {linevalue: 1},
-                {numberbreak: ""},
-                {booleannumber:0},
-        ]
-           
+            listbase: [],
+            linenumber : "",
+            linelength: "",
+            linevalue: "1",
+            numberbreak: "",
+            booleannumber:1,
         }
+        this.addNumberBreak = this.addNumberBreak.bind(this);
+    }
+    addNumberBreak = (a) => {
+       this.setState({
+           numberbreak: (a.value) 
+       })
     }
     onChange = (e) =>{
         this.setState({
-            value: e.target.value
+            [e.target.name]: e.target.value
         })
     }
     onSubmit = (e) => {
-		e.preventDefault()
-	
+        e.preventDefault();
+        this.handleTexttoArray();
+        
     }
-    saveData = () =>{
-        localStorage.setItem("List", JSON.stringify(this.state));
+    deleteHigherNum = (arrs) => {
+        return arrs.filter(arr => parseFloat(arr) < 71);
+      
+          
     }
+
+    deleteSameNum = (arrs) => {
+        return  arrs.filter((value, index, arr) => arr.indexOf(value) === index);
+    }
+    
+    handleTexttoArray =() =>{
+        const listBase = data;
+        const listchange = this.state.numberbreak.trim().split(" ");
+        
+        const log = this.deleteHigherNum(listchange);
+        const  listnumber = this.deleteSameNum(log);        
+        // return this.cutArray();
+        const finalList = this.cutArray(listBase,listnumber);
+        console.log(finalList);
+        
+        this.setState({
+            listbase: finalList
+        })
+      
+        localStorage.setItem("List", JSON.stringify(this.state))
+      
+    }
+    cutArray =(a1, a2)=> {
+
+        var a = [], diff = [];
+    
+        for (var i = 0; i < a1.length; i++) {
+            a[a1[i]] = true;
+        }
+    
+        for (var i = 0; i < a2.length; i++) {
+            if (a[a2[i]]) {
+                delete a[a2[i]];
+            } else {
+                a[a2[i]] = true;
+            }
+        }
+    
+        for (var k in a) {
+            diff.push(k);
+        }
+        
+                return diff
+        
+    }
+   
     render() {
-        console.log(this.state);
         
         return (
+           
             <div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
@@ -53,9 +108,9 @@ class Index extends Component {
                         name="linevalue" 
                         id=""
                         onChange={this.onChange}
-                        >
-                            <option value="1">1</option>
-                            <option value="0">0</option>
+                        >   
+                            <option value="1">Có</option>
+                            <option value="0">Không</option>
                         </select>
                         
                     </div>
@@ -74,17 +129,27 @@ class Index extends Component {
                             (<div className="form-group">
                             <label htmlFor="">Nhập số bạn muốn bỏ</label>
                             <input 
-                            type="radio"
-                            value="1" 
+                            type="textarea"
                             name="numberbreak" 
-                            onChange={this.onChange}/>
-                            </div>)
+                            onChange={this.onChange}
+                            />
+                            
+                            </div>
+                            )
                             : null
                         }
                         
                     </div>
                
-                    <button className="btn btn-success" type="submit" onClick={this.saveData()}><a href="/output">Next</a></button>
+                    <button
+                    className="btn btn-success" 
+                    type="submit" >
+                    <a 
+                    href="/output"
+                    >
+                    Next
+                    </a>
+                    </button>
                 </form>
                
             </div>

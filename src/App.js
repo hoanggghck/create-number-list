@@ -4,7 +4,7 @@ import './App.css';
 import Index from './components/Index';
 import Output from './components/Output';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-
+import Test from './components/text'
 function App() {
   return (
     <div className="App">
@@ -12,6 +12,7 @@ function App() {
       <Switch>
        <Route path="/" exact component={Index}/>
        <Route path="/output" exact component={Output}/>
+       <Route path="/text" exact component={Test}/>
       </Switch>
       </BrowserRouter>
     </div>
