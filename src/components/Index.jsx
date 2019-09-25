@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Output from './Output';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom'
 import data from './data'
-import { stringify } from 'querystring';
+
 class Index extends Component {
     constructor(props) {
         super(props);
@@ -13,13 +14,21 @@ class Index extends Component {
             linevalue: "1",
             numberbreak: "",
             booleannumber:1,
+            isOut: false,
+          
         }
-        this.addNumberBreak = this.addNumberBreak.bind(this);
+       
     }
-    addNumberBreak = (a) => {
-       this.setState({
-           numberbreak: (a.value) 
-       })
+    componentWillMount(){
+        this.setState({
+            listbase: data
+          })
+    }
+    OnOff= () => {
+        this.handleTexttoArray();
+        this.setState({
+            isOut:!this.state.isOut
+        })
     }
     onChange = (e) =>{
         this.setState({
@@ -28,7 +37,8 @@ class Index extends Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        this.handleTexttoArray();
+        // this.handleTexttoArray();
+     
         
     }
     deleteHigherNum = (arrs) => {
@@ -40,23 +50,23 @@ class Index extends Component {
     deleteSameNum = (arrs) => {
         return  arrs.filter((value, index, arr) => arr.indexOf(value) === index);
     }
-    
+  
     handleTexttoArray =() =>{
-        const listBase = data;
-        const listchange = this.state.numberbreak.trim().split(" ");
+        var listBase = this.state.listbase;
+        var listchange = this.state.numberbreak.trim().split(" ");
         
-        const log = this.deleteHigherNum(listchange);
-        const  listnumber = this.deleteSameNum(log);        
+        var log = this.deleteHigherNum(listchange);
+        var  listnumber = this.deleteSameNum(log);        
         // return this.cutArray();
-        const finalList = this.cutArray(listBase,listnumber);
-        console.log(finalList);
+       var listfinal= this.cutArray(listBase,listnumber);
         
         this.setState({
-            listbase: finalList
+            listbase:listfinal
         })
-      
-        localStorage.setItem("List", JSON.stringify(this.state))
-      
+        
+        
+
+          
     }
     cutArray =(a1, a2)=> {
 
@@ -81,9 +91,11 @@ class Index extends Component {
                 return diff
         
     }
-   
+
+
     render() {
         
+        localStorage.setItem("List",JSON.stringify(this.state))
         return (
            
             <div>
@@ -143,13 +155,18 @@ class Index extends Component {
                
                     <button
                     className="btn btn-success" 
-                    type="submit" >
-                    <a 
-                    href="/output"
+                    type="submit"
+                    onClick={this.OnOff}
                     >
-                    Next
-                    </a>
+                    GO
                     </button>
+                    { this.state.isOut? (
+
+                        <Link to="/output">TO</Link>
+
+                        ):null
+                    }
+                    
                 </form>
                
             </div>
