@@ -1,8 +1,10 @@
 .App {
   text-align: center;
   height: 635px;
-  padding-top: 50px;
   background-color: #E8E8E8;
+  padding-top: 50px;
+  
+  position: relative;
 }
 
 

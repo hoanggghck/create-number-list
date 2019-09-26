@@ -1,6 +1,6 @@
+
 .myOutput{
-    background-color: #E8E8E8;
-    
+    background-color: #E8E8E8; 
 }
 .listNumber{
     margin-top: 30px;
@@ -10,6 +10,7 @@
 
 
 .myOutput .buttonSpin{
+    margin-top: 20px;
     margin-bottom: 9px;
     background-color: white;
     color: rgb(70, 71, 80);
@@ -48,8 +49,12 @@
     background-color: rgb(146, 146, 146);
 }
 /* OutputItem */
-
+.myNumber{
+    z-index: 1000;
+    position: relative;
+}
 .myNumber span{
+    position: relative;
     background-color: rgb(85, 84, 84);
     color: white;
     font-size: 18px;

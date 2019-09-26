@@ -9,9 +9,9 @@ class Index extends Component {
             listbase: [],
             linenumber: "",
             linelength: "",
-            linevalue: "1",
+            linevalue: "",
             numberbreak: "",
-            booleannumber: "0",
+            booleannumber: "",
             linenumberErr: "",
             linelengthErr: "",
             listModal:[],
@@ -38,7 +38,7 @@ class Index extends Component {
     onSubmit = (e) => {
         //Ko cho trang tự load khi nhấn submit
         e.preventDefault();
-        localStorage.setItem("List", JSON.stringify(this.state))
+        
     }
 
     //Hàm xóa xóa các phần tử trong mảng không phải là số , lớn hơn 71 và nhỏ hơn 0
@@ -57,13 +57,13 @@ class Index extends Component {
     // Hàm loại bỏ những phần tử trong a1 có tồn tại trong a2
     cutArray = (a1, a2) => {
         
-        var a = [], diff = [];
+        let a = [], diff = [];
         
-        for (var i = 0; i < a1.length; i++) {
+        for (let i = 0; i < a1.length; i++) {
             a[a1[i]] = true;
         }
         
-        for (var i = 0; i < a2.length; i++) {
+        for (let i = 0; i < a2.length; i++) {
             if (a[a2[i]]) {
                 delete a[a2[i]];
             } else {
@@ -71,7 +71,8 @@ class Index extends Component {
             }
         }
 
-        for (var k in a) {
+        // eslint-disable-next-line no-unused-vars
+        for (let k in a) {
             diff.push(k);
         }
         
@@ -126,7 +127,7 @@ class Index extends Component {
     validateNumberLength = () => {
         let number = parseFloat(this.state.linelength);
         
-        if (number > 4 && number < 19) {
+        if (number > 1 && number < 19) {
             this.setState({
                 linelengthErr: ""
             });
@@ -139,6 +140,7 @@ class Index extends Component {
             return false
         }
     }
+
     // Mở Modal lên và chạy hàm handleTexttoArray
    OpenModal = () => {
         this.handleTexttoArray();
@@ -159,6 +161,7 @@ class Index extends Component {
 
 
     render() {
+        localStorage.setItem("List", JSON.stringify(this.state))
         return (
             <div className="myBox animated  rubberBand delay-0.5s"  data-aos="fade-in">
                 <h1>Tạo Số RanDom</h1>
@@ -183,21 +186,22 @@ class Index extends Component {
                             name="linelength"
                             placeholder="Nhập số lượng trong 1 dãy"
                             onChange={this.onChange}
-                            onBlur={this.validateNumberLength} />
+                            onBlur={this.validateNumberLength} 
+                            />
                         <div className="">
                             <span style={{ color: "red" }}>{this.state.linelengthErr}</span>
                         </div>
                     </div>
                     <div className="form-group form_form">
                         <label htmlFor="">Bạn có muốn dãy thứ tự hay không?</label><br/>
-                        <div className="select">
+                        <div >
                         <select
+                            className="select"
                             name="linevalue"
-                            
                             onChange={this.onChange}
-                        >
-                            <option value="1">Có</option>
+                            >
                             <option value="0">Không</option>
+                            <option value="1">Có</option>
                         </select>
                         </div>
                         
@@ -247,7 +251,7 @@ class Index extends Component {
                             <div className="modal_content" >
                                 {this.state.booleannumber === "1"?
                                 (<p>Số bạn muốn xóa</p>):
-                                (<p>Không có xóa nào mà bạn muốn xóa cả</p>)
+                                (<p>Bạn không muốn xóa số nào đúng ko ?</p>)
                                 }
                                 
                                 {this.state.listModal.map(item => {
