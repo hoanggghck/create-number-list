@@ -3,13 +3,17 @@ import React, { Component } from 'react';
 class OutPutItem extends Component {
     render() {
         const user = this.props.item
-         const alo = user.map((number) =>
-        <li  style={{display:"inline",marginRight:"20px",marginBottom:"10px",padding:"3px 2px",backgroundColor:"red"}}>{number}</li>
+         const number = user.map((number,index) =>
+                
+             <span className="" key={index} >{number}</span>
+
+         
 );
         
         return (
-            <div >
-                {alo}
+            <div className="myNumber animated bounceInRight ">
+
+                {number}
             </div>
         );
     }
